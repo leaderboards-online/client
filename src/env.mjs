@@ -16,6 +16,7 @@ const client = z.object({
   NEXT_PUBLIC_AUTH_DOMAIN: z.string().min(1),
   NEXT_PUBLIC_AUTH_CLIENT_ID: z.string().min(1),
   NEXT_PUBLIC_BACKEND_BASE_URL: z.string().min(1),
+  NEXT_PUBLIC_AUDIENCE: z.string().min(1),
 });
 
 /**
@@ -29,6 +30,7 @@ const processEnv = {
   NEXT_PUBLIC_AUTH_DOMAIN: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
   NEXT_PUBLIC_AUTH_CLIENT_ID: process.env.NEXT_PUBLIC_AUTH_CLIENT_ID,
   NEXT_PUBLIC_BACKEND_BASE_URL: process.env.NEXT_PUBLIC_BACKEND_BASE_URL,
+  NEXT_PUBLIC_AUDIENCE: process.env.NEXT_PUBLIC_AUDIENCE,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 

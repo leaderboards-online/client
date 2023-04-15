@@ -40,7 +40,8 @@ const AuthWrapper: FC<{ children: ReactNode }> = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isLoading, token]);
 
-  if (isLoading || authLoading) return <h1>Loading ...</h1>;
+  if (router.pathname.startsWith("/dashboard") && (isLoading || authLoading))
+    return <h1>Loading ...</h1>;
   if (
     (!isLoading || !authLoading) &&
     !data &&
