@@ -12,32 +12,34 @@ const AuthWrapper: FC<{ children: ReactNode }> = ({ children }) => {
   const router = useRouter();
   const { setUser, user: data } = useAuth();
   useEffect(() => {
-    if (isAuthenticated && !isLoading) {
-      void (async () => {
-        Api.post<{ user: User }>(
-          "/user/signIn",
-          {
-            username: user?.name,
-            email: user?.email,
-            avatar: user?.picture,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${await getAccessTokenSilently()}`,
+    if (!isLoading) {
+      if (isAuthenticated) {
+        return void (async () => {
+          Api.post<{ user: User }>(
+            "/user/signIn",
+            {
+              username: user?.name,
+              email: user?.email,
+              avatar: user?.picture,
             },
-          }
-        )
-          .then((data) => data.data.user)
-          .then((user) => setUser(user))
-          .catch(() => {
-            logout();
-            setUser(null);
-          });
-      })();
+            {
+              headers: {
+                Authorization: `Bearer ${await getAccessTokenSilently()}`,
+              },
+            }
+          )
+            .then((data) => data.data.user)
+            .then((user) => setUser(user))
+            .catch(() => {
+              logout();
+              setUser(null);
+            });
+        })();
+      }
+      setUser(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, isAuthenticated]);
-
   if (
     router.pathname.startsWith("/dashboard") &&
     (isLoading || data === undefined)
