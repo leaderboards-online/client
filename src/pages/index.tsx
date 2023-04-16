@@ -30,11 +30,21 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="min-w-screen relative flex h-full min-h-screen justify-center bg-almostBlack px-[20px] font-bold  text-almostWhite">
-        <div className="hero absolute h-full w-full" />
+        <Image
+          className="absolute h-full w-full"
+          width={1920}
+          height={1080}
+          alt="bg"
+          src={"/bg.svg"}
+        />
         <div className="z-50 flex h-full w-full max-w-[1200px] flex-col gap-[100px] pt-[100px]">
           <nav className="flex flex-col items-center justify-between md:flex-row">
             <h3 className="text-[30px] font-black tracking-tighter sm:text-[36px]">
-              leaderboards<span className="text-nicePurple">.online</span>
+              leaderboards
+              <span className="text-[36px] text-nicePurple sm:text-[40px]">
+                .
+              </span>
+              online
             </h3>
             <ul>
               {data === undefined ? (
@@ -69,7 +79,8 @@ const Home: NextPage = () => {
           <main className="flex h-full flex-col items-center justify-center gap-[100px] text-center md:flex-row md:text-start">
             <section className="flex h-full flex-col items-center justify-center">
               <h1 className="text-[40px] font-black leading-tight tracking-tighter md:text-[80px] lg:text-[96px]">
-                setup leaderboards in a click
+                setup <span className="text-nicePurple">leaderboards </span>in a
+                click
               </h1>
               <p className="text-[8px] font-bold text-lightGray md:text-[36px]">
                 setup beautiful leaderboards fast, comes with rich api support

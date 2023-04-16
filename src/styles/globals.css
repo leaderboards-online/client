@@ -7,8 +7,3 @@
 :root {
   --font-manrope: "Manrope", sans-serif;
 }
-
-.hero {
-  background: url("../../public/bg.svg");
-  background-position: center;
-}
