@@ -2,9 +2,14 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Button from "~/components/Button";
 import { useAuth0 } from "@auth0/auth0-react";
+import Link from "next/link";
+import { useAuth } from "~/AuthContext";
 
 const Home: NextPage = () => {
-  const { isAuthenticated, loginWithRedirect, isLoading, logout } = useAuth0();
+  const { logout, loginWithRedirect } = useAuth0();
+
+  const { user: data } = useAuth();
+
   return (
     <>
       <Head>
@@ -22,17 +27,9 @@ const Home: NextPage = () => {
             support to easily plug into your apps
           </p>
         </div>
-        {isLoading ? (
+        {data === undefined ? (
           <h1>Loading....</h1>
-        ) : isAuthenticated ? (
-          <Button
-            onClick={() => {
-              logout();
-            }}
-          >
-            Logout
-          </Button>
-        ) : (
+        ) : data === null ? (
           <Button
             onClick={() => {
               loginWithRedirect({
@@ -48,6 +45,19 @@ const Home: NextPage = () => {
           >
             {"Let's Go >"}
           </Button>
+        ) : (
+          <div className="flex gap-4">
+            <Button>
+              <Link href={"/dashboard"}>dashboard</Link>
+            </Button>
+            <Button
+              onClick={() => {
+                logout();
+              }}
+            >
+              Logout
+            </Button>
+          </div>
         )}
       </main>
     </>

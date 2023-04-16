@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AuthWrapper from "~/AuthWrapper";
 import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
+import { Analytics } from "@vercel/analytics/react";
+import { AuthProvider } from "~/AuthContext";
 
 const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
   const queryClient = new QueryClient();
@@ -25,17 +27,20 @@ const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
           audience: env.NEXT_PUBLIC_AUDIENCE,
         }}
       >
-        <AuthWrapper>
-          <MantineProvider
-            theme={{
-              colorScheme: "dark",
-              fontFamily: "poppins",
-            }}
-          >
-            <Notifications />
-            <Component {...pageProps} />
-          </MantineProvider>
-        </AuthWrapper>
+        <AuthProvider>
+          <AuthWrapper>
+            <MantineProvider
+              theme={{
+                colorScheme: "dark",
+                fontFamily: "poppins",
+              }}
+            >
+              <Notifications />
+              <Component {...pageProps} />
+              <Analytics />
+            </MantineProvider>
+          </AuthWrapper>
+        </AuthProvider>
       </Auth0Provider>
     </QueryClientProvider>
   );

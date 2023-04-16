@@ -12,3 +12,12 @@ export type Participant = {
   points: number;
   leaderboard: string;
 };
+
+export type User = {
+  _id: string;
+  username: string;
+  email: string;
+  sub: string;
+  avatar: string;
+  leaderboards: string;
+};

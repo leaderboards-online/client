@@ -1,51 +1,56 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useRouter } from "next/router";
-import { useEffect, type FC, type ReactNode, useState } from "react";
+import { useEffect, type FC, type ReactNode } from "react";
 import Home from "./pages";
-import { useUser } from "./hooks/user";
-import { type AxiosError } from "axios";
-import { notifications } from "@mantine/notifications";
+import Api from "./services/http";
+import { type User } from "./types";
+import { useAuth } from "./AuthContext";
 
 const AuthWrapper: FC<{ children: ReactNode }> = ({ children }) => {
-  const { isLoading, getAccessTokenSilently, isAuthenticated, user } =
+  const { getAccessTokenSilently, isLoading, isAuthenticated, user, logout } =
     useAuth0();
   const router = useRouter();
-  const [token, setToken] = useState("");
-
-  const {
-    data,
-    refetch,
-    isLoading: authLoading,
-  } = useUser({
-    username: user?.name as string,
-    email: user?.email as string,
-    avatar: user?.picture as string,
-  });
-
+  const { setUser, user: data } = useAuth();
   useEffect(() => {
-    if (!isLoading && isAuthenticated && user && !data) {
+    if (isAuthenticated && !isLoading) {
       void (async () => {
-        const accessToken = await getAccessTokenSilently();
-        setToken(accessToken);
-      })();
-      if (token) {
-        refetch().catch((e: AxiosError<{ message: string }>) => {
-          notifications.show({
-            message: e.response?.data.message,
-            color: "red",
+        Api.post<{ user: User }>(
+          "/user/signIn",
+          {
+            username: user?.name,
+            email: user?.email,
+            avatar: user?.picture,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${await getAccessTokenSilently()}`,
+            },
+          }
+        )
+          .then((data) => data.data.user)
+          .then((user) => setUser(user))
+          .catch(() => {
+            logout();
+            setUser(null);
           });
-        });
-      }
+      })();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated, isLoading, token]);
+  }, [isLoading, isAuthenticated]);
 
-  if (router.pathname.startsWith("/dashboard") && (isLoading || authLoading))
-    return <h1>Loading ...</h1>;
   if (
-    (!isLoading || !authLoading) &&
-    !data &&
-    router.pathname.startsWith("/dashboard")
+    router.pathname.startsWith("/dashboard") &&
+    (isLoading || data === undefined)
+  )
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-almostBlack text-center text-4xl font-heading text-almostWhite">
+        Loading ...
+      </div>
+    );
+  if (
+    router.pathname.startsWith("/dashboard") &&
+    (!isLoading || data !== undefined) &&
+    data === null
   )
     return <Home />;
 

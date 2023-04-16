@@ -11,8 +11,8 @@ import {
 } from "~/hooks/Participant";
 import { Participant } from "~/types";
 import { AiFillDelete } from "react-icons/ai";
+import axios, { type AxiosError } from "axios";
 import { notifications } from "@mantine/notifications";
-import { type AxiosError } from "axios";
 
 const Participant: FC<{
   participant: Participant;
@@ -42,23 +42,26 @@ const Participant: FC<{
         />
         <button
           className="bg-almostWhite p-3 text-almostBlack"
-          onClick={(e) => {
-            e.preventDefault();
+          onClick={() => {
             incrementPoints
               .mutateAsync({
                 amount,
                 participantId: participant?._id,
                 leaderboardId: leaderboardUid,
               })
-              .catch((e: AxiosError<{ message: string }>) => {
-                notifications.show({
-                  message: e.response?.data.message,
-                  color: "red",
-                });
+              .catch((e: AxiosError | Error) => {
+                if (axios.isAxiosError<{ message: string }>(e)) {
+                  notifications.show({
+                    message: e.response?.data.message || e.message,
+                    color: "red",
+                  });
+                  return;
+                }
+                notifications.show({ message: e.message, color: "red" });
               });
           }}
         >
-          Increment
+          +
         </button>
         <input
           type="number"
@@ -77,27 +80,33 @@ const Participant: FC<{
                 participantId: participant?._id,
                 leaderboardId: leaderboardUid,
               })
-              .catch((e: AxiosError<{ message: string }>) => {
-                notifications.show({
-                  message: e.response?.data.message,
-                  color: "red",
-                });
+              .catch((e: AxiosError | Error) => {
+                if (axios.isAxiosError<{ message: string }>(e)) {
+                  notifications.show({
+                    message: e.response?.data.message || e.message,
+                    color: "red",
+                  });
+                  return;
+                }
+                notifications.show({ message: e.message, color: "red" });
               });
           }}
         >
-          Decrement
+          -
         </button>
         <button
           className="hover:text-red-500"
           onClick={() => {
-            deleteParticipant
-              .mutateAsync()
-              .catch((e: AxiosError<{ message: string }>) => {
+            deleteParticipant.mutateAsync().catch((e: AxiosError | Error) => {
+              if (axios.isAxiosError<{ message: string }>(e)) {
                 notifications.show({
-                  message: e.response?.data.message,
+                  message: e.response?.data.message || e.message,
                   color: "red",
                 });
-              });
+                return;
+              }
+              notifications.show({ message: e.message, color: "red" });
+            });
           }}
         >
           <AiFillDelete size={32} />
@@ -119,11 +128,15 @@ const AddParticipant: FC<{ leaderboardId: string }> = ({ leaderboardId }) => {
         e.preventDefault();
         addParticipant
           .mutateAsync({ name, points })
-          .catch((e: AxiosError<{ message: string }>) => {
-            notifications.show({
-              message: e.response?.data.message,
-              color: "red",
-            });
+          .catch((e: AxiosError | Error) => {
+            if (axios.isAxiosError<{ message: string }>(e)) {
+              notifications.show({
+                message: e.response?.data.message || e.message,
+                color: "red",
+              });
+              return;
+            }
+            notifications.show({ message: e.message, color: "red" });
           });
       }}
     >
@@ -189,7 +202,15 @@ const LeaderboardDashboard = () => {
     }
   }, [data]);
   if (isError) return <h1>Oops an error occurred lol</h1>;
-  if (data === undefined || isLoading) return <h1>Loading {id}</h1>;
+  if (data === undefined || isLoading)
+    return (
+      <h1
+        className="
+  flex min-h-screen flex-col items-center justify-center gap-8 bg-almostBlack text-center text-almostWhite"
+      >
+        Loading {id}
+      </h1>
+    );
   return (
     <div
       className="
@@ -202,11 +223,15 @@ const LeaderboardDashboard = () => {
           if (!isEditing) {
             updateLeaderboardName
               .mutateAsync({ name: newName })
-              .catch((e: AxiosError<{ message: string }>) => {
-                notifications.show({
-                  message: e.response?.data.message,
-                  color: "red",
-                });
+              .catch((e: AxiosError | Error) => {
+                if (axios.isAxiosError<{ message: string }>(e)) {
+                  notifications.show({
+                    message: e.response?.data.message || e.message,
+                    color: "red",
+                  });
+                  return;
+                }
+                notifications.show({ message: e.message, color: "red" });
               });
           }
         }}
