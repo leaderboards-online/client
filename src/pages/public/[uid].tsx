@@ -45,19 +45,30 @@ const Leaderboard: NextPage<{
       </>
     );
   return (
-    <div className="w-max-screen flex h-full min-h-screen w-full flex-col items-center justify-center overflow-x-hidden bg-almostBlack py-[50px] text-almostWhite">
-      <h1 className="z-30 text-2xl font-heading text-white sm:text-lg md:text-5xl">
-        {leaderboard.name}
-      </h1>
-      <div
-        className="mx-[20px] my-[30px] flex h-fit min-h-[500px] w-full min-w-[300px] max-w-[700px] flex-col gap-4 rounded-sm border-[1px] border-[white] bg-[#252525] p-4"
-        style={{ boxShadow: "0 0 200px 10px #7B5AFF" }}
-      >
-        {leaderboard.participants.map((p, idx) => (
-          <Participant participant={p} key={idx} idx={idx} />
-        ))}
+    <>
+      <Head>
+        <title>{leaderboard.name.substring(0, 50)}</title>
+        <meta
+          name="description"
+          content="leaderboards.online - setup leaderboards in a click"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <div className="w-max-screen flex h-full min-h-screen w-full flex-col items-center justify-center overflow-x-hidden bg-almostBlack py-[50px] text-almostWhite">
+        <h1 className="z-30 text-2xl font-heading text-white sm:text-lg md:text-5xl">
+          {leaderboard.name}
+        </h1>
+        <div
+          className="mx-[20px] my-[30px] flex h-fit min-h-[500px] w-full min-w-[300px] max-w-[700px] flex-col gap-4 rounded-sm border-[1px] border-[white] bg-[#252525] p-4"
+          style={{ boxShadow: "0 0 200px 10px #7B5AFF" }}
+        >
+          {leaderboard.participants.map((p, idx) => (
+            <Participant participant={p} key={idx} idx={idx} />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

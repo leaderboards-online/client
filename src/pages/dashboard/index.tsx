@@ -1,5 +1,6 @@
 import { notifications } from "@mantine/notifications";
 import axios, { type AxiosError } from "axios";
+import Head from "next/head";
 import Link from "next/link";
 import { type FC } from "react";
 import { AiFillDelete, AiOutlineArrowRight } from "react-icons/ai";
@@ -53,43 +54,50 @@ const Dashboard = () => {
   const { data: leaderboards, isError, isLoading } = useLeaderboards();
 
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-center gap-8 bg-almostBlack text-center text-almostWhite`}
-    >
-      <Button
-        onClick={() => {
-          createLeaderboard.mutateAsync().catch((e: AxiosError | Error) => {
-            if (axios.isAxiosError<{ message: string }>(e)) {
-              notifications.show({
-                message: e.response?.data.message || e.message,
-                color: "red",
-              });
-              return;
-            }
-            notifications.show({ message: e.message, color: "red" });
-          });
-        }}
+    <>
+      <Head>
+        <title>dashboard | leaderboards.online</title>
+        <meta name="description" content="setup leaderboards in a click" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main
+        className={`flex min-h-screen flex-col items-center justify-center gap-8 bg-almostBlack text-center text-almostWhite`}
       >
-        <div className="flex flex-col">
-          <h3 className="text-lg">create a leaderboard</h3>
-          <p className="text-gray-500">i told you only one click :)</p>
+        <Button
+          onClick={() => {
+            createLeaderboard.mutateAsync().catch((e: AxiosError | Error) => {
+              if (axios.isAxiosError<{ message: string }>(e)) {
+                notifications.show({
+                  message: e.response?.data.message || e.message,
+                  color: "red",
+                });
+                return;
+              }
+              notifications.show({ message: e.message, color: "red" });
+            });
+          }}
+        >
+          <div className="flex flex-col">
+            <h3 className="text-lg">create a leaderboard</h3>
+            <p className="text-gray-500">i told you only one click :)</p>
+          </div>
+        </Button>
+        <div className="flex flex-col rounded-sm bg-neutral-100 p-2 ">
+          <h1 className="pb-7 text-3xl font-heading text-almostBlack">
+            created leaderboards
+          </h1>
+          {isError ? (
+            <h1>an error occurred, please reload!</h1>
+          ) : isLoading || !leaderboards ? (
+            <h1>Loading</h1>
+          ) : (
+            leaderboards.map((lb, idx) => (
+              <CreatedLeaderboard leaderboard={lb} key={idx} />
+            ))
+          )}
         </div>
-      </Button>
-      <div className="flex flex-col rounded-sm bg-neutral-100 p-2 ">
-        <h1 className="pb-7 text-3xl font-heading text-almostBlack">
-          created leaderboards
-        </h1>
-        {isError ? (
-          <h1>an error occurred, please reload!</h1>
-        ) : isLoading || !leaderboards ? (
-          <h1>Loading</h1>
-        ) : (
-          leaderboards.map((lb, idx) => (
-            <CreatedLeaderboard leaderboard={lb} key={idx} />
-          ))
-        )}
-      </div>
-    </main>
+      </main>
+    </>
   );
 };
 
