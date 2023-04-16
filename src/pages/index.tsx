@@ -88,11 +88,15 @@ const Home: NextPage = () => {
               </p>
             </section>
             <section className="w-full">
-              <ol className="z-30 flex h-full w-full grow basis-0 flex-col gap-4 rounded-md bg-almostBlack p-4">
+              <motion.ol
+                className="z-30 flex h-full w-full grow basis-0 flex-col gap-4 rounded-md bg-almostBlack p-4"
+                initial={{ scale: 0, y: 100 }}
+                animate={{ scale: 1, y: 0 }}
+              >
                 {people.map((person, idx) => {
                   return <Card card={person} key={idx} idx={idx} />;
                 })}
-              </ol>
+              </motion.ol>
             </section>
           </main>
         </div>
@@ -105,7 +109,9 @@ type CardProps = { image: string; name: string; points: number };
 
 const Card: FC<{ card: CardProps; idx: number }> = ({ card, idx }) => {
   return (
-    <li
+    <motion.li
+      initial={{ scale: 0, y: 100 }}
+      animate={{ scale: 1, y: 0 }}
       className={`flex w-full items-center justify-between rounded-md bg-cyan-500 p-4 ${
         idx === 0 && "bg-red-500"
       } ${idx === 1 && "bg-purple-500"} ${idx === 2 && "bg-orange-500"}`}
@@ -121,7 +127,7 @@ const Card: FC<{ card: CardProps; idx: number }> = ({ card, idx }) => {
         @{card.name}
       </div>
       {card.points}
-    </li>
+    </motion.li>
   );
 };
 
