@@ -13,6 +13,7 @@ import { Participant } from "~/types";
 import { AiFillDelete } from "react-icons/ai";
 import axios, { type AxiosError } from "axios";
 import { notifications } from "@mantine/notifications";
+import Link from "next/link";
 
 const Participant: FC<{
   participant: Participant;
@@ -170,6 +171,14 @@ const Participants: FC<{ leadearboardId: string }> = ({ leadearboardId }) => {
 
   return (
     <div className="flex w-3/5 flex-col gap-4">
+      <div className="flex gap-4">
+        <Link href={"/dashboard"}>
+          <Button animated={false}>Back to dashboard</Button>
+        </Link>
+        <Link href={`/public/${leadearboardId}`}>
+          <Button animated={false}>Live Link</Button>
+        </Link>
+      </div>
       {data.map((participant, idx) => {
         return (
           <Participant
@@ -214,7 +223,7 @@ const LeaderboardDashboard = () => {
   return (
     <div
       className="
-  flex min-h-screen flex-col items-center justify-center gap-8 bg-almostBlack text-center text-almostWhite"
+  flex min-h-screen flex-col items-center justify-center gap-8 bg-almostBlack p-5 py-[70px] text-center text-almostWhite"
     >
       <form
         className="flex gap-4"

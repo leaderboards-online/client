@@ -8,6 +8,7 @@ import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { Analytics } from "@vercel/analytics/react";
 import { AuthProvider } from "~/AuthContext";
+import { useRouter } from "next/router";
 
 const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
   const queryClient = new QueryClient();
@@ -17,31 +18,47 @@ const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
       ? window.location.origin + "/dashboard"
       : "";
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Auth0Provider
-        domain={env.NEXT_PUBLIC_AUTH_DOMAIN}
-        clientId={env.NEXT_PUBLIC_AUTH_CLIENT_ID}
-        authorizationParams={{
-          redirect_uri: origin,
-          audience: env.NEXT_PUBLIC_AUDIENCE,
+  const router = useRouter();
+
+  if (router.pathname.startsWith("/public"))
+    return (
+      <MantineProvider
+        theme={{
+          colorScheme: "dark",
+          fontFamily: "poppins",
         }}
       >
-        <AuthProvider>
-          <AuthWrapper>
-            <MantineProvider
-              theme={{
-                colorScheme: "dark",
-                fontFamily: "poppins",
-              }}
-            >
-              <Notifications />
+        <Notifications />
+        <Analytics />
+        <Component {...pageProps} />
+      </MantineProvider>
+    );
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <MantineProvider
+        theme={{
+          colorScheme: "dark",
+          fontFamily: "poppins",
+        }}
+      >
+        <Notifications />
+        <Analytics />
+        <Auth0Provider
+          domain={env.NEXT_PUBLIC_AUTH_DOMAIN}
+          clientId={env.NEXT_PUBLIC_AUTH_CLIENT_ID}
+          authorizationParams={{
+            redirect_uri: origin,
+            audience: env.NEXT_PUBLIC_AUDIENCE,
+          }}
+        >
+          <AuthProvider>
+            <AuthWrapper>
               <Component {...pageProps} />
-              <Analytics />
-            </MantineProvider>
-          </AuthWrapper>
-        </AuthProvider>
-      </Auth0Provider>
+            </AuthWrapper>
+          </AuthProvider>
+        </Auth0Provider>
+      </MantineProvider>
     </QueryClientProvider>
   );
 };
