@@ -11,6 +11,7 @@ const AuthWrapper: FC<{ children: ReactNode }> = ({ children }) => {
     useAuth0();
   const router = useRouter();
   const { setUser, user: data } = useAuth();
+  console.log({ isLoading, isAuthenticated, user, data });
   useEffect(() => {
     if (!isLoading) {
       if (isAuthenticated) {

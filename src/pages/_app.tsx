@@ -9,6 +9,7 @@ import { Notifications } from "@mantine/notifications";
 import { Analytics } from "@vercel/analytics/react";
 import { AuthProvider } from "~/AuthContext";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
   const queryClient = new QueryClient();
@@ -19,6 +20,10 @@ const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
       : "";
 
   const router = useRouter();
+
+  useEffect(() => {
+    document.head.innerHTML += `<script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="probablyarth" data-description="Support me on Buy me a coffee!" data-message="currently the loading time might be higher because its running on free serversif you want to, you can help the project by donating some amount ~ all the money will go into development and production :)" data-color="#FF813F" data-position="Right" data-x_margin="18" data-y_margin="18"></script>`;
+  });
 
   if (router.pathname.startsWith("/public"))
     return (
@@ -39,7 +44,7 @@ const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
       <MantineProvider
         theme={{
           colorScheme: "dark",
-          fontFamily: "poppins",
+          fontFamily: "manrope",
         }}
       >
         <Notifications />

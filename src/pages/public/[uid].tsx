@@ -78,8 +78,8 @@ const Participant: FC<{ participant: Participant; idx: number }> = ({
   return (
     <motion.div
       className={`relative flex items-center justify-between rounded-sm bg-almostBlack p-4 ${
-        idx === 0 && "bg-green-500"
-      } ${idx === 1 && "bg-orange-500"} ${idx === 2 && "bg-yellow-500"}`}
+        idx === 0 && "bg-red-500"
+      } ${idx === 1 && "bg-purple-500"} ${idx === 2 && "bg-orange-500"}`}
       animate={animation}
       transition={transtion}
     >
