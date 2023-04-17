@@ -1,18 +1,16 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useRouter } from "next/router";
 import { useEffect, type FC, type ReactNode } from "react";
-import Home from "./pages";
 import Api from "./services/http";
 import { type User } from "./types";
 import { useAuth } from "./AuthContext";
 import Head from "next/head";
+import Login from "./components/Login";
 
 const AuthWrapper: FC<{ children: ReactNode }> = ({ children }) => {
   const { getAccessTokenSilently, isLoading, isAuthenticated, user, logout } =
     useAuth0();
-  const router = useRouter();
   const { setUser, user: data } = useAuth();
-  console.log({ isLoading, isAuthenticated, user, data });
+
   useEffect(() => {
     if (!isLoading) {
       if (isAuthenticated) {
@@ -42,10 +40,8 @@ const AuthWrapper: FC<{ children: ReactNode }> = ({ children }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, isAuthenticated]);
-  if (
-    router.pathname.startsWith("/dashboard") &&
-    (isLoading || data === undefined)
-  )
+
+  if (isLoading || data === undefined)
     return (
       <>
         <Head>
@@ -58,12 +54,8 @@ const AuthWrapper: FC<{ children: ReactNode }> = ({ children }) => {
         </div>
       </>
     );
-  if (
-    router.pathname.startsWith("/dashboard") &&
-    (!isLoading || data !== undefined) &&
-    data === null
-  )
-    return <Home />;
+
+  if ((!isLoading || data !== undefined) && data === null) return <Login />;
 
   return <>{children}</>;
 };

@@ -230,60 +230,50 @@ const LeaderboardDashboard = () => {
     );
   return (
     <>
-      <Head>
-        <title>dashboard | leaderboards.online</title>
-        <meta name="description" content="setup leaderboards in a click" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <div
-        className="
-  flex min-h-screen flex-col items-center justify-center gap-8 bg-almostBlack p-5 py-[70px] text-center text-almostWhite"
+      <form
+        className="flex gap-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (!isEditing) {
+            updateLeaderboardName
+              .mutateAsync({ name: newName })
+              .catch((e: AxiosError | Error) => {
+                if (axios.isAxiosError<{ message: string }>(e)) {
+                  notifications.show({
+                    message: e.response?.data.message || e.message,
+                    color: "red",
+                  });
+                  return;
+                }
+                notifications.show({ message: e.message, color: "red" });
+              });
+          }
+        }}
       >
-        <form
-          className="flex gap-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (!isEditing) {
-              updateLeaderboardName
-                .mutateAsync({ name: newName })
-                .catch((e: AxiosError | Error) => {
-                  if (axios.isAxiosError<{ message: string }>(e)) {
-                    notifications.show({
-                      message: e.response?.data.message || e.message,
-                      color: "red",
-                    });
-                    return;
-                  }
-                  notifications.show({ message: e.message, color: "red" });
-                });
-            }
+        {isEditing ? (
+          <input
+            className="rounded-sm bg-almostWhite p-3 text-4xl font-heading text-almostBlack"
+            value={newName}
+            onChange={(e) => {
+              setNewName(e.target.value);
+            }}
+            autoCorrect="off"
+          />
+        ) : (
+          <h1 className="rounded-sm bg-almostWhite p-3 text-5xl font-heading text-almostBlack">
+            {data.name}
+          </h1>
+        )}
+        <Button
+          animated={false}
+          onClick={() => {
+            setIsEditing((prev) => !prev);
           }}
         >
-          {isEditing ? (
-            <input
-              className="rounded-sm bg-almostWhite p-3 text-4xl font-heading text-almostBlack"
-              value={newName}
-              onChange={(e) => {
-                setNewName(e.target.value);
-              }}
-              autoCorrect="off"
-            />
-          ) : (
-            <h1 className="rounded-sm bg-almostWhite p-3 text-5xl font-heading text-almostBlack">
-              {data.name}
-            </h1>
-          )}
-          <Button
-            animated={false}
-            onClick={() => {
-              setIsEditing((prev) => !prev);
-            }}
-          >
-            {isEditing ? "Save" : "Edit"}
-          </Button>
-        </form>
-        <Participants leadearboardId={id} />
-      </div>
+          {isEditing ? "Save" : "Edit"}
+        </Button>
+      </form>
+      <Participants leadearboardId={id} />
     </>
   );
 };
