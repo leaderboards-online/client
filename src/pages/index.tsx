@@ -13,13 +13,13 @@ const Home: NextPage = () => {
 
   return (
     <LazyMotion features={domAnimation}>
-      <main className="flex h-full flex-col items-center justify-center gap-[100px] text-center md:flex-row md:text-start">
+      <main className="flex h-full flex-col items-center justify-center gap-[50px] text-center md:flex-row md:gap-[100px] md:text-start">
         <section className="flex h-full flex-col items-center justify-center">
           <h1 className="text-[40px] font-black leading-tight tracking-tighter md:text-[80px] lg:text-[96px]">
             setup <span className="text-nicePurple">leaderboards </span>in a
             click
           </h1>
-          <p className="text-[8px] font-bold text-lightGray md:text-[36px]">
+          <p className="text-[18px] font-bold text-lightGray md:text-[36px]">
             setup beautiful leaderboards fast, comes with rich api support to
             easily plug into your apps
           </p>

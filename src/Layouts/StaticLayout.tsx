@@ -21,9 +21,9 @@ const StaticLayout: FC<{ children: ReactNode }> = ({ children }) => {
           alt="bg"
           src={"/bg.svg"}
         />
-        <div className="z-50 flex h-full w-full max-w-[1200px] flex-col gap-[100px] pt-[100px]">
+        <div className="z-50 flex h-full w-full max-w-[1200px] flex-col gap-[50px] pt-[100px] md:gap-[100px]">
           <nav className="flex flex-col items-center justify-between md:flex-row">
-            <Logo />
+            <Logo link />
             <ul className="flex gap-[30px]">
               <li className="cursor-pointer">
                 <Link href={"/feedback"}>found a bug?</Link>

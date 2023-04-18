@@ -4,10 +4,10 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import { env } from "~/env.mjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/react";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import StaticLayout from "~/Layouts/StaticLayout";
-import { lazy, Suspense } from "react";
-import SuspenseFallback from "~/components/SuspenseFallback";
+import { lazy, Suspense, useState } from "react";
+import Loader from "~/components/Loader";
 
 const Notifications = lazy(() =>
   import("@mantine/notifications").then((module) => ({
@@ -28,20 +28,29 @@ const DashboardLayout = lazy(() => import("~/Layouts/DashboardLayout"));
 const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
   const queryClient = new QueryClient();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const origin =
     typeof window !== "undefined" && window.location.origin
       ? window.location.origin + "/dashboard"
       : "";
 
   const router = useRouter();
+  Router.events.on("routeChangeStart", () => {
+    setIsLoading(true);
+  });
+  Router.events.on("routeChangeComplete", () => {
+    setIsLoading(false);
+  });
 
-  if (router.pathname.startsWith("/public"))
+  if (router.pathname.startsWith("/public")) {
     return (
       <>
         <Analytics />
         <Component {...pageProps} />
       </>
     );
+  }
 
   if (!router.pathname.startsWith("/dashboard"))
     return (
@@ -53,8 +62,10 @@ const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
       </>
     );
 
+  if (isLoading) return <Loader />;
+
   return (
-    <Suspense fallback={<SuspenseFallback />}>
+    <Suspense fallback={<Loader />}>
       <QueryClientProvider client={queryClient}>
         <MantineProvider
           theme={{

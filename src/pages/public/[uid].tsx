@@ -55,7 +55,7 @@ const Leaderboard: NextPage<{
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="w-max-screen flex h-full min-h-screen w-full flex-col items-center justify-center overflow-x-hidden bg-almostBlack py-[50px] text-almostWhite">
+      <div className="w-max-screen flex h-full min-h-screen w-full flex-col items-center justify-center overflow-x-hidden bg-almostBlack py-[50px] text-center text-almostWhite">
         <h1 className="z-30 text-2xl font-heading text-white sm:text-lg md:text-5xl">
           {leaderboard.name}
         </h1>

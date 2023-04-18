@@ -5,6 +5,7 @@ import { type User } from "./types";
 import { useAuth } from "./AuthContext";
 import Head from "next/head";
 import Login from "./components/Login";
+import Loader from "./components/Loader";
 
 const AuthWrapper: FC<{ children: ReactNode }> = ({ children }) => {
   const { getAccessTokenSilently, isLoading, isAuthenticated, user, logout } =
@@ -49,9 +50,7 @@ const AuthWrapper: FC<{ children: ReactNode }> = ({ children }) => {
           <meta name="description" content="setup leaderboards in a click" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-almostBlack text-center text-4xl font-heading text-almostWhite">
-          Loading ...
-        </div>
+        <Loader />
       </>
     );
 
