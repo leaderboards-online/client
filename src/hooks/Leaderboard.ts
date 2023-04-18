@@ -29,11 +29,18 @@ export const useCreateLeaderboard = () => {
 };
 
 export const useLeaderboard = (leaderboardId: string) => {
+  const { getAccessTokenSilently } = useAuth0();
+
   return useQuery({
     queryKey: ["leaderboards", leaderboardId],
     queryFn: async () => {
       return Api.get<{ leaderboard: Leaderboard }>(
-        `/leaderboard/${leaderboardId}`
+        `/leaderboard/${leaderboardId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${await getAccessTokenSilently()}`,
+          },
+        }
       ).then((data) => data.data.leaderboard);
     },
   });
