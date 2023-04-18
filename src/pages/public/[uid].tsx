@@ -76,23 +76,11 @@ const Participant: FC<{ participant: Participant; idx: number }> = ({
   participant,
   idx,
 }) => {
-  let animation = {};
-  let transtion = {};
-  if (idx < 3) {
-    animation = {
-      y: -7,
-      x: 3,
-    };
-    transtion = { repeat: Infinity, repeatDelay: 0.01, repeatType: "loop" };
-  }
-
   return (
     <motion.div
       className={`relative flex items-center justify-between rounded-sm bg-almostBlack p-4 ${
         idx === 0 && "bg-red-500"
       } ${idx === 1 && "bg-purple-500"} ${idx === 2 && "bg-orange-500"}`}
-      animate={animation}
-      transition={transtion}
     >
       <h1 className="font-bold">{participant.name}</h1>
       <h1 className="font-bold">{participant.points}</h1>
