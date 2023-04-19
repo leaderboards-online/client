@@ -22,7 +22,7 @@ const CreatedLeaderboard: FC<{ leaderboard: Leaderboard }> = ({
       <Link href={`/dashboard/${leaderboard.uid}`}>
         <AiOutlineArrowRight
           size={24}
-          className="transition-transform hover:translate-x-2"
+          className="transition-transform duration-300 hover:translate-x-1"
         />
       </Link>
       <button
