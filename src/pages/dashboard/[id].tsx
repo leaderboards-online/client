@@ -39,8 +39,39 @@ const Participant: FC<{
         <h3>{participant?.points} points</h3>
       </div>
       <div className="relative flex items-center gap-2 text-sm">
+        <button
+          className="bg-almostWhite p-3 text-almostBlack"
+          onClick={() => {
+            decrementPoints
+              .mutateAsync({
+                amount,
+                participantId: participant?._id,
+                leaderboardId: leaderboardUid,
+              })
+              .catch((e: AxiosError | Error) => {
+                if (axios.isAxiosError<{ message: string }>(e)) {
+                  notifications.show({
+                    message: e.response?.data.message || e.message,
+                    color: "red",
+                  });
+                  return;
+                }
+                notifications.show({ message: e.message, color: "red" });
+              });
+          }}
+        >
+          -
+        </button>
         <LoadingOverlay
           visible={incrementPoints.isLoading || decrementPoints.isLoading}
+        />
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => {
+            setAmount(parseInt(e.target.value));
+          }}
+          className="w-[80px] p-3 text-black"
         />
         <button
           className="bg-almostWhite p-3 text-almostBlack"
@@ -64,37 +95,6 @@ const Participant: FC<{
           }}
         >
           +
-        </button>
-        <input
-          type="number"
-          value={amount}
-          onChange={(e) => {
-            setAmount(parseInt(e.target.value));
-          }}
-          className="w-[80px] p-3 text-black"
-        />
-        <button
-          className="bg-almostWhite p-3 text-almostBlack"
-          onClick={() => {
-            decrementPoints
-              .mutateAsync({
-                amount,
-                participantId: participant?._id,
-                leaderboardId: leaderboardUid,
-              })
-              .catch((e: AxiosError | Error) => {
-                if (axios.isAxiosError<{ message: string }>(e)) {
-                  notifications.show({
-                    message: e.response?.data.message || e.message,
-                    color: "red",
-                  });
-                  return;
-                }
-                notifications.show({ message: e.message, color: "red" });
-              });
-          }}
-        >
-          -
         </button>
         <button
           className="hover:text-red-500"
