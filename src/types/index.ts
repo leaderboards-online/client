@@ -19,6 +19,7 @@ export type Participant = {
   name: string;
   points: number;
   leaderboard: string;
+  avatar: string;
 };
 
 export type User = {

@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import axios, { type AxiosError } from "axios";
 import Link from "next/link";
 import Head from "next/head";
+import Image from "next/image";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const Leaderboard: NextPage<{
@@ -82,7 +83,16 @@ const Participant: FC<{ participant: Participant; idx: number }> = ({
         idx === 0 && "bg-red-500"
       } ${idx === 1 && "bg-purple-500"} ${idx === 2 && "bg-orange-500"}`}
     >
-      <h1 className="font-bold">{participant.name}</h1>
+      <div className="flex items-center gap-4">
+        <Image
+          width={48}
+          height={48}
+          alt={participant.name}
+          src={participant.avatar}
+          className="rounded-full border-2 border-black"
+        />
+        <h1 className="font-bold">{participant.name}</h1>
+      </div>
       <h1 className="font-bold">{participant.points}</h1>
     </motion.div>
   );

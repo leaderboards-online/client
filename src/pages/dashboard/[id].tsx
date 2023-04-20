@@ -15,12 +15,13 @@ import axios, { type AxiosError } from "axios";
 import { notifications } from "@mantine/notifications";
 import Link from "next/link";
 import Head from "next/head";
+import Image from "next/image";
 
 const Participant: FC<{
   participant: Participant;
   idx: number;
   leaderboardUid: string;
-}> = ({ participant, idx, leaderboardUid }) => {
+}> = ({ participant, leaderboardUid }) => {
   const [amount, setAmount] = useState(1);
 
   const incrementPoints = useUpdateScore("increment");
@@ -33,9 +34,16 @@ const Participant: FC<{
   return (
     <div className="flex gap-4">
       <div className="flex w-full items-center justify-between gap-4 rounded-md bg-neutral-800 p-3 text-white">
-        <h3>
-          {idx + 1}. {participant?.name}
-        </h3>
+        <div className="flex items-center gap-4">
+          <Image
+            width={48}
+            height={48}
+            alt={participant.name}
+            src={participant.avatar}
+            className="rounded-full border-2 border-black"
+          />
+          <h3>{participant?.name}</h3>
+        </div>
         <h3>{participant?.points} points</h3>
       </div>
       <div className="relative flex items-center gap-2 text-sm">

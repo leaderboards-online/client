@@ -1,4 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { adventurerNeutral } from "@dicebear/collection";
+import { createAvatar } from "@dicebear/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Api from "~/services/http";
 import { type Participant } from "~/types";
@@ -60,9 +62,12 @@ export const useAddParticipant = (leaderboardId: string) => {
 
   return useMutation({
     mutationFn: async ({ name, points }: { name: string; points: number }) => {
+      const avatar = createAvatar(adventurerNeutral, {
+        seed: name,
+      }).toDataUriSync();
       return Api.post<{ participant: Participant }>(
         `/participant/${leaderboardId}`,
-        { name, points },
+        { name, points, avatar },
         {
           headers: {
             Authorization: `Bearer ${await getAccessTokenSilently()}`,
