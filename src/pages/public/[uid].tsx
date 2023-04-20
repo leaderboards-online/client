@@ -70,7 +70,7 @@ const Leaderboard: NextPage<{
         <meta name="language" content="English" />
         <meta
           name="keywords"
-          content="leaderboards, leaderboards.online, leaderboard, probablyarth, arth"
+          content="leaderboards, leaderboards.online, leaderboard, probablyarth, arth, leaderboard maker"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
