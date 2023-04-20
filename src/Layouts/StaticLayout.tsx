@@ -10,7 +10,18 @@ const StaticLayout: FC<{ children: ReactNode }> = ({ children }) => {
     <>
       <Head>
         <title>leaderboards.online</title>
-        <meta name="description" content="setup leaderboards in a click" />
+        <meta
+          name="description"
+          content="leaderboards.online | setup leaderboards in a click, leaderboards.online let's you create sick looking, beautiful leaderboards very fast"
+        />
+        <meta name="author" content="probablyarth" />
+        <meta name="robots" content="index, follow" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="language" content="English" />
+        <meta
+          name="keywords"
+          content="leaderboards, leaderboards.online, leaderboard, probablyarth, arth"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="min-w-screen relative flex h-full min-h-screen justify-center bg-almostBlack px-[20px] font-bold text-almostWhite">

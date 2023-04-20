@@ -6,7 +6,18 @@ const DashboardLayout: FC<{ children: ReactNode }> = ({ children }) => {
     <>
       <Head>
         <title>dashboard | leaderboards.online</title>
-        <meta name="description" content="setup leaderboards in a click" />
+        <meta
+          name="description"
+          content="leaderboards.online | setup leaderboards in a click, leaderboards.online let's you create sick looking, beautiful leaderboards very fast"
+        />
+        <meta name="author" content="probablyarth" />
+        <meta name="robots" content="index, follow" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="language" content="English" />
+        <meta
+          name="keywords"
+          content="leaderboards, leaderboards.online, leaderboard, probablyarth, arth"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-almostBlack text-center text-almostWhite">
